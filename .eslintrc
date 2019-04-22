@@ -1,0 +1,134 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "func-names": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "semi": [
+      "warn",
+      "always"
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "ignore"
+      }
+    ],
+    "arrow-parens": "off",
+    "no-trailing-spaces": "off",
+    "react/jsx-one-expression-per-line": [
+      "error",
+      {
+        "allow": "literal"
+      }
+    ],
+    "react/display-name": [
+      0
+    ],
+    "react/require-default-props": [
+      "error",
+      {
+        "forbidDefaultForRequired": true
+      }
+    ],
+    "react/prop-types": [
+      1,
+      {
+        "ignore": [
+          "t",
+          "i18n",
+          "match",
+          "pageMainData",
+          "setPageMainData",
+          "fetchDataAgain",
+          "changeMetaData"
+        ],
+        "customValidators": []
+      }
+    ],
+    "no-control-regex": 0,
+    "react/prefer-stateless-function": [
+      0,
+      {
+        "ignorePureComponents": false
+      }
+    ],
+    "import/no-unresolved": [
+      "error"
+    ],
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          ".storybook/**",
+          "**/stories/**",
+          "**/stories.js",
+          "**/*.stories.js"
+        ]
+      }
+    ],
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/anchor-is-valid": [
+      1,
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ]
+      }
+    ],
+    "no-return-assign": "off"
+  },
+  "globals": {
+    "__DEV__": false,
+    "__CUSTOM_BACKEND_URL__": false
+  }
+}
