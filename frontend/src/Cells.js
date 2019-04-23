@@ -38,9 +38,12 @@ const ExpandableCellHeader = styled.div`
 `;
 
 const Cell = ({
-  children, onClick, bold, accent, level,
+  children, onClick, lead, level, expanded,
 }) => (
-  <CellContainer onClick={onClick} bold={bold} accent={accent} level={level}>
+  <CellContainer onClick={onClick} lead={lead} expanded={expanded} level={level}>
+    <TriggerContainer expanded={expanded}>
+      { expanded ? '—' : '+' }
+    </TriggerContainer>
     { children }
   </CellContainer>
 );
@@ -49,12 +52,26 @@ const CellContainer = styled.div`
   display: flex;
   background-color: #fff;
   padding: 15px 10px;
-  padding-left: ${props => 40 + 20 * (props.level || 0)}px;
+  padding-left: ${props => 20 + 10 * (props.level || 0)}px;
+  @media screen and (min-width: 768px) {
+    padding-left: ${props => 40 + 20 * (props.level || 0)}px;
+  }
 
-  font-size: ${props => (props.bold ? '1.25' : '1')}rem;
-  font-weight: ${props => (props.bold ? '500' : '300')};
+  font-size: ${props => (props.lead ? '1.25' : '1')}rem;
+  font-weight: ${props => (props.lead ? '500' : '300')};
 
-  border-bottom: ${props => (props.accent ? '1px solid #bdc3c7' : 'none')};
+  border-bottom: ${props => (props.expanded ? '1px solid #bdc3c7' : 'none')};
+
+  :hover {
+    background-color: #e8eded;
+  }
+`;
+
+const TriggerContainer = styled.div`
+  color: ${props => (props.expanded ? '#d35400' : '#27ae60')};
+  min-width: 30px;
+  text-align: center;
+  font-weight: 400;
 `;
 
 export { ExpandableCell, Cell };

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import { Cell, ExpandableCell } from './Cells';
+import ChargerInfo from './ChargerInfo';
+import { ReactComponent as Spinner } from './assets/spinner.svg';
 
 const unknownPowerGroupKey = 'unknown';
 const powerGroups = {
@@ -74,7 +76,7 @@ export default class Chargers extends Component {
     const citiesCells = citiesInfo
       .map(city => {
         const renderCityHeader = expanded => (
-          <Cell bold accent={expanded}>
+          <Cell lead expanded={expanded}>
             { city.name }
           </Cell>
         );
@@ -83,16 +85,23 @@ export default class Chargers extends Component {
           .sort((a, b) => powerGroups[a].displayOrder - powerGroups[b].displayOrder)
           .map(groupKey => {
             const renderGroupHeader = expanded => (
-              <Cell level={1} accent={expanded}>
+              <Cell level={1} expanded={expanded}>
                 { powerGroups[groupKey].text }
               </Cell>
             );
 
-            const chargersCells = city.groupedChargers[groupKey].map(charger => (
-              <Cell level={2} key={charger.location.title}>
-                { charger.location.title }
-              </Cell>
-            ));
+            const chargersCells = city.groupedChargers[groupKey].map(charger => {
+              const renderChargerHeader = expanded => (
+                <Cell level={2} expanded={expanded}>
+                  { charger.location.title }
+                </Cell>
+              );
+              return (
+                <ExpandableCell key={charger.location.title} renderHeader={renderChargerHeader}>
+                  <ChargerInfo charger={charger} />
+                </ExpandableCell>
+              );
+            });
 
             return (
               <ExpandableCell key={groupKey} renderHeader={renderGroupHeader}>
@@ -108,16 +117,62 @@ export default class Chargers extends Component {
         );
       });
 
+    const isLoading = !citiesCells.length;
+    const spinner = (
+      <SpinnerWrapper>
+        <Spinner />
+      </SpinnerWrapper>
+    );
+
     return (
       <Container>
-        <h1>Chargers</h1>
-        <p>Pick the city and power group you're interested in</p>
-        { citiesCells }
+        <Header>
+          <h1>Chargers</h1>
+          <p>Pick the city and power group you're interested in</p>
+        </Header>
+        { isLoading ? spinner : citiesCells }
       </Container>
     );
   }
 }
 
 const Container = styled.div`
-  padding: 50px 300px 100px 300px;
+  padding: 10px 0;
+
+  @media screen and (min-width: 768px) {
+    padding: 20px 100px 50px 100px;
+  }
+
+  @media screen and (min-width: 992px) {
+    padding: 40px 200px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    padding: 40px 300px;
+  }
+
+  @media screen and (min-width: 1500px) {
+    padding: 40px 400px;
+  }
+`;
+
+const Header = styled.div`
+  padding-left: 15px;
+  margin-bottom: 10px;
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 0;
+  }
+`;
+
+const SpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 400px;
 `;
