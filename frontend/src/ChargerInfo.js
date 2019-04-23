@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
 export default class ChargerInfo extends Component {
@@ -22,7 +23,7 @@ export default class ChargerInfo extends Component {
     const { basicTabSelected } = this.state;
 
     const details = basicTabSelected ? (
-      <div>
+      <div key="basic">
         <h3>Location</h3>
         <DetailsSection>
           <LabeledValue label="Address" value={location.address} />
@@ -45,7 +46,7 @@ export default class ChargerInfo extends Component {
         </DetailsSection>
       </div>
     ) : (
-      <div>
+      <div key="advanced">
         <h3>Operator</h3>
         <DetailsSection>
           <LabeledValue label="Title" value={operator.title} />
@@ -65,8 +66,13 @@ export default class ChargerInfo extends Component {
           <Tab selected={basicTabSelected} text="Basic" onClick={this.selectBasicTab} />
           <Tab selected={!basicTabSelected} text="Advanced" onClick={this.selectAdvancedTab} />
         </ChargerInfoHeader>
+
         <ChargerInfoDetails>
-          { details }
+          <TransitionGroup>
+            <CSSTransition key={basicTabSelected} className="slide" timeout={300} classNames="slide">
+              { details }
+            </CSSTransition>
+          </TransitionGroup>
         </ChargerInfoDetails>
       </ChargerInfoContainer>
     );
@@ -135,9 +141,12 @@ const ChargerInfoContainer = styled.div`
   background-color: #ffffff;
   border: 1px solid #bdc3c7;
   border-top: none;
+
+  transition: height 400ms linear;
 `;
 
 const ChargerInfoDetails = styled.div`
+  position: relative;
   padding: 0 20px 20px 20px;
   h3 {
     margin-bottom: 5px;

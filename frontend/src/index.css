@@ -12,3 +12,22 @@ a {
   color: #9b59b6;
   text-decoration: none;
 }
+
+.slide {
+  transition: all 300ms ease-in-out;
+}
+
+.slide-enter, .slide-exit-active {
+  transform: translate(0, -50px);
+  opacity: 0;
+}
+
+.slide-exit {
+  position: absolute;
+  top: 0;
+}
+
+.slide-enter-active {
+  transform: none;
+  opacity: 1;
+}
