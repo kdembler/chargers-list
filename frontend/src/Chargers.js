@@ -45,31 +45,34 @@ export default class Chargers extends Component {
     }
   }
 
-  parseCities = cities => Object.values(cities || {})
-    .sort((a, b) => a.displayName.localeCompare(b.displayName))
-    .map(city => {
-      const { chargers } = city;
-      const sortedPowerGroupsKeys = Object.keys(powerGroups)
-        .filter(groupKey => groupKey !== unknownPowerGroupKey)
-        .sort((a, b) => powerGroups[b].min - powerGroups[a].min);
+  parseCities = cities => {
+    const sortedPowerGroupsKeys = Object.keys(powerGroups)
+      .filter(groupKey => groupKey !== unknownPowerGroupKey)
+      .sort((a, b) => powerGroups[b].min - powerGroups[a].min);
 
-      const groupedChargers = chargers.reduce((acc, charger) => {
-        const { power } = charger.connection;
-        const group = (power && sortedPowerGroupsKeys
-          .find(groupKey => powerGroups[groupKey].min < power))
+    return Object.values(cities || {})
+      .sort((a, b) => a.displayName.localeCompare(b.displayName))
+      .map(city => {
+        const { chargers } = city;
+
+        const groupedChargers = chargers.reduce((acc, charger) => {
+          const { power } = charger.connection;
+          const group = (power && sortedPowerGroupsKeys
+            .find(groupKey => powerGroups[groupKey].min < power))
           || unknownPowerGroupKey;
-        if (!acc[group]) {
-          acc[group] = [];
-        }
-        acc[group].push(charger);
-        return acc;
-      }, {});
+          if (!acc[group]) {
+            acc[group] = [];
+          }
+          acc[group].push(charger);
+          return acc;
+        }, {});
 
-      return {
-        name: city.displayName,
-        groupedChargers,
-      };
-    })
+        return {
+          name: city.displayName,
+          groupedChargers,
+        };
+      });
+  }
 
   render() {
     const { citiesInfo } = this.state;
